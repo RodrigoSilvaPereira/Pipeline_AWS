@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Define o caminho para o arquivo de vendas
+caminho_arquivo="/home/rodrigo/ecommerce/dados_de_vendas.csv"
+
+# Cria o diretório "vendas" se não existir e copia o arquivo de vendas para dentro dele
+mkdir -p ~/vendas
+cp "$caminho_arquivo" ~/vendas/
+
+# Entra no diretório "vendas"
+cd ~/vendas || exit
+
+# Cria um subdiretório chamado "backup" se não existir
+mkdir -p backup
+
+# Obtém a data e hora atual no formato "yyyymmdd_HHMMSS"
+data_hora=$(date "+%Y%m%d_%H%M%S")
+
+# Define o nome do arquivo de backup com a data atual
+nome_backup="dados-$data_hora.csv"
+
+# Copia o arquivo de vendas para o diretório "backup" com o nome formatado
+cp dados_de_vendas.csv backup/"$nome_backup"
+
+# Renomeia o arquivo de backup dentro do diretório "backup"
+mv "backup/$nome_backup" "backup/backup-dados-$data_hora.csv"
+
+# Extrai a data do primeiro registro de venda
+data_primeiro_registro=$(cut -d ',' -f5 "backup/backup-dados-$data_hora.csv" | sed -n '2p')
+
+# Extrai a data do último registro de venda
+data_ultimo_registro=$(cut -d ',' -f5 "backup/backup-dados-$data_hora.csv" | tail -n 1)
+
+# Define o nome do arquivo de relatório com data e hora
+nome_relatorio="relatorio_$data_hora.txt"
+
+# Cria um arquivo de relatório para a data e hora atual
+echo "Data do sistema operacional: $(date "+%Y/%m/%d %H:%M")" > "backup/$nome_relatorio"
+echo "Data do primeiro registro de venda: $data_primeiro_registro" >> "backup/$nome_relatorio"
+echo "Data do último registro de venda: $data_ultimo_registro" >> "backup/$nome_relatorio"
+echo "Quantidade total de itens diferentes vendidos:" >> "backup/$nome_relatorio"
+awk -F',' '{print $2}' "backup/backup-dados-$data_hora.csv" | sort | uniq | wc -l >> "backup/$nome_relatorio"
+echo "Primeiras 10 linhas do arquivo de backup:" >> "backup/$nome_relatorio"
+head "backup/backup-dados-$data_hora.csv" >> "backup/$nome_relatorio"
+
+# Comprime o arquivo de backup em um arquivo ZIP
+zip "backup/backup-dados-$data_hora.zip" "backup/backup-dados-$data_hora.csv"
+
+# Remove o arquivo de backup original e o arquivo de vendas do diretório "vendas"
+rm "backup/backup-dados-$data_hora.csv"
+rm dados_de_vendas.csv
+
+echo "Processamento concluído."

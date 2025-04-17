@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export PATH="$PATH:/home/rodrigo/"
+
+# Diretório onde os relatórios são armazenados
+relatorios_dir="/home/rodrigo/vendas/backup"
+
+# Arquivo de saída final
+relatorio_final="/home/rodrigo/relatorio_final.txt"
+
+# Mudar para o diretório dos relatórios
+cd "$relatorios_dir"
+
+# Unir todos os relatórios em um único arquivo
+cat *.txt > "$relatorio_final"
+
+echo "Relatórios consolidados com sucesso em $relatorio_final"

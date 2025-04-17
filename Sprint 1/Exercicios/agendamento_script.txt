@@ -1,0 +1,4 @@
+chmod +x ~/processamento_de_vendas.sh
+crontab -l | { cat; echo "*/5 * * * * ~/processamento_de_vendas.sh"; } | crontab -
+
+#crontab -l | { cat; echo "27 15 * * 1-4 ~/processamento_de_vendas.sh"; } | crontab - (Exemplo de como ficaria De segunda a Quinta as 15:27 como foi pedido)

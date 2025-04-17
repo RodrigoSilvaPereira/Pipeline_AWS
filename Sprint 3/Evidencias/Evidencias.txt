@@ -1,0 +1,1 @@
+Está pasta armazena arquivos de evidência de execução do código quando necessários.

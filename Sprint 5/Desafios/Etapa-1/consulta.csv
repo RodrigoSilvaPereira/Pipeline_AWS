@@ -1,0 +1,3 @@
+quantidade_registros,tipo_veiculo,infracoes_velocidade,quantidade_condutores,latitude_media,ano_cometimento,descricao_curta,data_atual
+25379,AUTOMOVEL                ,20046,25379,,2023,Transitar em velocidade superior à máxima permitida em até 20%,2024-05-20
+18234,AUTOMOVEL,16549,18234,,2023,Transitar em velocidade superior à máxima permitida em até 20%,2024-05-20
